@@ -4,9 +4,11 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ImageUploadOrDeleteTraits;
 
 class BaseService
 {
+    use ImageUploadOrDeleteTraits;
 
     /**
      * @var Model
@@ -82,7 +84,7 @@ class BaseService
     public function logFlashThrow(\Exception $e)
     {
         log_error($e);
-        something_wrong_toast();
+        something_wrong_flash();
         throw $e;
     }
 }

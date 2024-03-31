@@ -21,6 +21,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <!-- Sweet alert CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -53,8 +54,89 @@
 
     <!-- Sweet alert JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     @stack('scripts')
+
+    <!-- Toaster Options JS  -->
+    <script>
+        toastr.options =
+        {
+            "closeButton": true,
+            "progressBar": true,
+            "timeOut": 2000
+        }
+
+        @if(Session::has('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+
+        @if(Session::has('update'))
+            toastr.info("{{ session('update') }}");
+        @endif
+
+        @if(Session::has('delete'))
+        toastr.success("{{ session('delete') }}");
+
+        @endif
+        @if(Session::has('info'))
+            toastr.info("{{ session('info') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.warning("{{ session('warning') }}");
+        @endif
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+
+        // Toaster notify
+        const notify = (type, msg) => {
+            if (type == 'success') {
+                toastr.success(msg);
+            } else {
+                toastr.warning(msg);
+            }
+        }
+
+        function showSomethingWrong() {
+            Swal.fire({
+                icon: "error",
+                html: "<span>Something is wrong!</span>" + "<br>",
+                showConfirmButton: true,
+            });
+        }
+
+        function makeDeleteRequest(event, id) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#02a499",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if ($("#delete-form-" + id).length > 0) {
+                        let form_id = $("#delete-form-" + id);
+                        $(form_id).submit();
+                    } else {
+                        let form_id = $("#delete-form-" + id);
+                        $(form_id).submit();
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

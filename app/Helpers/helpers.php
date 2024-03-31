@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('get_storage_image')) {
@@ -34,10 +35,10 @@ if (!function_exists('getImage')) {
     }
 }
 
-if (!function_exists('something_wrong_toast')) {
+if (!function_exists('something_wrong_flash')) {
 
-    function something_wrong_toast($message = null)
+    function something_wrong_flash($message = null)
     {
-        toastr()->error($message ?? 'Something is wrong!');
+        Session::flash('error', $message ?? 'Something is wrong!');
     }
 }

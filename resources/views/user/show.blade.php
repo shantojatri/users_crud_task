@@ -16,6 +16,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="py-10 px-8 text-gray-900">
                     <div class="w-full mx-auto">
+                        <div class="pb-5">
+                            <img class="rounded w-36 h-36" src="{{ $user->avatar_url ? $user->avatar_url :'/config/default.png' }}" alt="avatar">
+                        </div>
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

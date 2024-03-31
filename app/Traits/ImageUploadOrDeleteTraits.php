@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\ImageUploadOrDeleteTraits;
+namespace App\Traits;
 
 trait ImageUploadOrDeleteTraits
 {

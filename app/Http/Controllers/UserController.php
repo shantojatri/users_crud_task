@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
+use App\Interfaces\UserInterface;
 use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
+    /**
+     * Construct property promotion and Dependency injection
+     */
+    public function __construct(private UserInterface $userService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,7 +38,13 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $validated = $request->validated();
-        return $validated;
+
+        try {
+            $this->userService->storeOrUpdateData($request, $validated, null);
+        } catch (\Exception $e) {
+            log_error($e);
+        }
+        return redirect()->route('users.index');
     }
 
     /**
@@ -56,7 +69,13 @@ class UserController extends Controller
     public function update(UserStoreRequest $request, User $user)
     {
         $validated = $request->validated();
-        return $validated;
+        // return $validated;
+        try {
+            $this->userService->storeOrUpdateData($request, $validated, $user);
+        } catch (\Exception $e) {
+            log_error($e);
+        }
+        return redirect()->route('users.index');
     }
 
     /**
@@ -64,7 +83,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        $this->userService->deleteData($user);
         return redirect()->route('users.index');
     }
 }
