@@ -82,11 +82,6 @@
         @if(Session::has('delete'))
         toastr.success("{{ session('delete') }}");
 
-        @endif
-        @if(Session::has('info'))
-            toastr.info("{{ session('info') }}");
-        @endif
-
         @if(Session::has('warning'))
             toastr.warning("{{ session('warning') }}");
         @endif
@@ -114,6 +109,7 @@
             });
         }
 
+        // Delete form request and show confirmation
         function makeDeleteRequest(event, id) {
             event.preventDefault();
             Swal.fire({
