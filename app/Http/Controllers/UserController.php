@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\View\View;
 use App\DataTables\UserDataTable;
 use App\Interfaces\UserInterface;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
@@ -27,7 +29,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('user.create');
     }
@@ -35,7 +37,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserStoreRequest $request)
+    public function store(UserStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -51,7 +53,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $user): View
     {
         return view('user.show', compact('user'));
     }
@@ -59,7 +61,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         return view('user.edit', compact('user'));
     }
@@ -67,7 +69,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserStoreRequest $request, User $user)
+    public function update(UserStoreRequest $request, User $user): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -82,7 +84,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
 
         try {
