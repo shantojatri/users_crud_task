@@ -3,6 +3,8 @@
 namespace App\DataTables;
 
 use App\Models\User;
+use Illuminate\Support\Str;
+use App\Utils\GlobalConstant;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\EloquentDataTable;
@@ -20,7 +22,7 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-        ->addColumn('action', function ($query) {
+            ->addColumn('action', function ($query) {
                 $buttons = '';
                 $buttons .= '<a href="' . route('users.edit', $query->id) . '"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -45,7 +47,18 @@ class UserDataTable extends DataTable
                 ' . $buttons . '
                 </div>';
             })
-            ->rawColumns(['action'])
+            ->editColumn('status', function ($query) {
+                $class = $query->status == GlobalConstant::STATUS_ACTIVE ? "bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300" : "bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300";
+                return '<span class="' . $class . '">' . Str::upper($query->status) . '</span>';
+            })
+            ->editColumn('status', function ($query) {
+                $class = $query->status == GlobalConstant::STATUS_ACTIVE ? "bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300" : "bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300";
+                return '<span class="' . $class . '">' . Str::upper($query->status) . '</span>';
+            })
+            ->editColumn('phone', function ($query) {
+                return $query->phone ? $query->phone : "N/A";
+            })
+            ->rawColumns(['phone', 'status', 'action'])
             ->addIndexColumn();
     }
 
@@ -54,7 +67,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('id','desc');
+        return $model->newQuery()->orderBy('id', 'desc');
     }
 
     /**
@@ -85,8 +98,10 @@ class UserDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', 'SL#')->width(70),
-            Column::make('name'),
-            Column::make('email'),
+            Column::make('name')->title('Full Name'),
+            Column::make('email')->width(300),
+            Column::make('phone')->title('Mobile'),
+            Column::make('status')->width(200),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

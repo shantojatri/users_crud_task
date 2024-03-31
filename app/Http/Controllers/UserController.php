@@ -41,6 +41,7 @@ class UserController extends Controller
 
         try {
             $this->userService->storeOrUpdateData($request, $validated, null);
+            record_created_flash();
         } catch (\Exception $e) {
             log_error($e);
         }
@@ -69,9 +70,9 @@ class UserController extends Controller
     public function update(UserStoreRequest $request, User $user)
     {
         $validated = $request->validated();
-        // return $validated;
+
         try {
-            $this->userService->storeOrUpdateData($request, $validated, $user);
+            $this->userService->storeOrUpdateData($request, $validated, $user);record_updated_flash();
         } catch (\Exception $e) {
             log_error($e);
         }
@@ -83,7 +84,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->userService->deleteData($user);
+
+        try {
+            $this->userService->deleteData($user);
+            record_deleted_flash();
+        } catch (\Exception $e) {
+            log_error($e);
+        }
+
         return redirect()->route('users.index');
     }
 }
