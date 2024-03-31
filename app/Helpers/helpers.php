@@ -1,9 +1,6 @@
 <?php
 
-
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('get_storage_image')) {
@@ -34,5 +31,13 @@ if (!function_exists('getImage')) {
         } else {
             return asset('/images/default.png');
         }
+    }
+}
+
+if (!function_exists('something_wrong_toast')) {
+
+    function something_wrong_toast($message = null)
+    {
+        toastr()->error($message ?? 'Something is wrong!');
     }
 }

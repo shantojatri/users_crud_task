@@ -30,11 +30,13 @@ class UserStoreRequest extends FormRequest
             'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
             'phone'    => ['nullable', 'string', 'max:11'],
             'password' => ['required', 'confirmed', Password::min(8)],
+            'password_confirmation' => ['required', Password::min(8)],
         ];
 
         if($this->user){
-            $rules['avatar']   = ['nullable'];
+            $rules['avatar']   = ['nullable', 'string', Password::min(8)];
             $rules['password'] = ['nullable'];
+            $rules['password_confirmation'] = ['nullable', Password::min(8)];
         }
 
         return $rules;

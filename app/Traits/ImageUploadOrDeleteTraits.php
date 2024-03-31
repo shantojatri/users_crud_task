@@ -2,8 +2,8 @@
 
 namespace App\Traits\ImageUploadOrDeleteTraits;
 
-class ImageUploadOrDeleteTraits {
-
+trait ImageUploadOrDeleteTraits
+{
     public function uploadImage($request, $inputName, $path, $old = null){
         $filePath = '/app/public/'. $path .'/';
 
@@ -30,8 +30,14 @@ class ImageUploadOrDeleteTraits {
         }
     }
 
-    public function deleteImage(){
-        // image upload logic here
+    public function deleteImage($file_path, $model, $field){
+        if ($model->$field) {
+            try {
+                unlink(storage_path('/app/public/'.$file_path.'/'). $model->$field);
+            } catch (\Exception $e) {
+            }
+        }
+        return $model->delete();
     }
 }
 ?>
