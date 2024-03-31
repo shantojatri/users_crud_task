@@ -18,6 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     # User routes
+    Route::delete('user-force-delete/{id}', [UserController::class, 'permanentDelete'])->name('users.force-destroy');
+    Route::post('users/restore/{id}', [UserController::class, 'restore'])->name('users.soft-restore');
+    Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
     Route::resource('users', UserController::class);
 });
 

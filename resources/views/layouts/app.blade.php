@@ -81,6 +81,7 @@
 
         @if(Session::has('delete'))
         toastr.success("{{ session('delete') }}");
+        @endif
 
         @if(Session::has('warning'))
             toastr.warning("{{ session('warning') }}");

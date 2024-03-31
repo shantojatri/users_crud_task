@@ -8,6 +8,7 @@ use App\DataTables\UserDataTable;
 use App\Interfaces\UserInterface;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UserStoreRequest;
+use App\DataTables\UsersTrashedDataTable;
 
 class UserController extends Controller
 {
@@ -95,5 +96,42 @@ class UserController extends Controller
         }
 
         return redirect()->route('users.index');
+    }
+
+    /**
+     *  Get all the trashed users
+     */
+    public function trashed(UsersTrashedDataTable $dataTable)
+    {
+        return $dataTable->render('user.trashed');
+    }
+
+    /**
+     *  Restore a single user
+     */
+    public function restore(int $id)
+    {
+        try {
+            $this->userService->restoreData($id);
+            record_created_flash('User restored successfully');
+        } catch (\Exception $e) {
+            log_error($e);
+        }
+        return back();
+    }
+
+    /**
+     *  Restore a single user
+     */
+    public function permanentDelete($id)
+    {
+        try {
+            // User::where('id', $id)->withTrashed()->forceDelete();
+            $this->userService->forceDeleteData($id);
+            record_deleted_flash('User permanently deleted successfully');
+        } catch (\Exception $e) {
+            log_error($e);
+        }
+        return back();
     }
 }
