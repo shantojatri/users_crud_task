@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\DataTables\UserDataTable;
+use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UserDataTable $dataTable)
     {
-        return view('user.index');
+        return $dataTable->render('user.index');
     }
 
     /**
@@ -26,9 +28,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+        return $validated;
     }
 
     /**
@@ -50,9 +53,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserStoreRequest $request, User $user)
     {
-        //
+        $validated = $request->validated();
+        return $validated;
     }
 
     /**
@@ -60,6 +64,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('users.index');
     }
 }

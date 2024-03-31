@@ -12,13 +12,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, softDeletes;
 
+    public const FILE_UPLOAD_PATH = 'avatar';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'avatar',
         'name',
+        'phone',
         'email',
         'password',
     ];
