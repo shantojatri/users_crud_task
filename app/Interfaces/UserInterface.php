@@ -2,11 +2,16 @@
 
 namespace App\Interfaces;
 
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+
 interface UserInterface
 {
-    public function storeOrUpdateData($request, array $data, $model);
+    public function storeData(Request $request, array $data);
 
-    public function deleteData($model);
+    public function updateData(Request $request, array $data, Model $model);
+
+    public function deleteData(Model $model);
 
     public function restoreData(int $id);
 

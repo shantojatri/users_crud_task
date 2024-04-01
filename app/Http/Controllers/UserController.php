@@ -15,14 +15,14 @@ class UserController extends Controller
     /**
      * Construct property promotion and Dependency injection
      */
-    public function __construct(private UserInterface $userService)
+    public function __construct(protected UserInterface $userService)
     {
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(UserDataTable $dataTable)
+    public function index(UserDataTable $dataTable): Mixed
     {
         return $dataTable->render('user.index');
     }
@@ -41,7 +41,7 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $this->userService->storeOrUpdateData($request, $validated, null);
+        $this->userService->storeData($request, $validated);
         record_created_flash();
 
         return redirect()->route('users.index');
@@ -69,7 +69,7 @@ class UserController extends Controller
     public function update(UserStoreRequest $request, User $user): RedirectResponse
     {
         $validated = $request->validated();
-        $this->userService->storeOrUpdateData($request, $validated, $user);
+        $this->userService->updateData($request, $validated, $user);
         record_updated_flash();
 
         return redirect()->route('users.index');
@@ -90,7 +90,7 @@ class UserController extends Controller
     /**
      *  Get all the trashed users
      */
-    public function trashed(UsersTrashedDataTable $dataTable)
+    public function trashed(UsersTrashedDataTable $dataTable): Mixed
     {
         return $dataTable->render('user.trashed');
     }
@@ -98,7 +98,7 @@ class UserController extends Controller
     /**
      *  Restore a single user
      */
-    public function restore(int $id)
+    public function restore(int $id): RedirectResponse
     {
         $this->userService->restoreData($id);
         record_created_flash('User restored successfully');
@@ -109,10 +109,11 @@ class UserController extends Controller
     /**
      *  Restore a single user
      */
-    public function permanentDelete($id)
+    public function permanentDelete($id): RedirectResponse
     {
         $this->userService->forceDeleteData($id);
         record_deleted_flash('User permanently deleted successfully');
+
         return back();
     }
 }

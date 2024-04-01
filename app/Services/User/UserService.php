@@ -2,68 +2,82 @@
 
 namespace App\Services\User;
 
+use Exception;
 use App\Models\User;
-use App\Services\BaseService;
+use Illuminate\Http\Request;
 use App\Interfaces\UserInterface;
+use App\Services\ImageUploadService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 
-class UserService extends BaseService implements UserInterface
+class UserService extends ImageUploadService implements UserInterface
 {
 
-    protected $model;
+    /**
+     * Const variable
+     */
+    private const IMAGE_INPUT_NAME = 'avatar';
 
-    public function __construct()
+    /**
+     * Construct property promotion
+     */
+    public function __construct(protected User $model)
     {
-        $this->model = User::class;
     }
 
-    public function storeOrUpdateData($request, $data, $ownModel=null)
+    public function storeData(Request $request, array $data)
     {
-        $id = $ownModel ? $ownModel->id : null;
         try {
-            if($data['password']){
-                $data['password'] = Hash::make($data['password']);
-            } else{
-                $data['password'] = $ownModel->password;
-            }
-
-            if($id){
-                $imageName = $this->uploadImage($request, 'avatar', User::FILE_UPLOAD_PATH, $ownModel);
-            } else{
-                $imageName = $this->uploadImage($request, 'avatar', User::FILE_UPLOAD_PATH);
-            }
+            $data['password'] = Hash::make($data['password']);
+            $imageName = $this->uploadImage($request, self::IMAGE_INPUT_NAME, User::FILE_UPLOAD_PATH);
             $data['avatar'] = $imageName;
-            return parent::storeOrUpdate($data, $id);
-        } catch (\Exception $e) {
+
+            return $this->model::create($data);
+        } catch (Exception $e) {
             $this->logFlashThrow($e);
         }
     }
 
-    public function deleteData($ownModel)
+    public function updateData(Request $request, array $data, Model $model)
     {
         try {
-            return parent::delete($ownModel);
-        } catch (\Exception $e) {
+            if($data['password']) $data['password'] = Hash::make($data['password']);
+
+            $data['password'] = $model->password;
+            $imageName = $this->uploadImage($request, 'avatar', User::FILE_UPLOAD_PATH, $model);
+            $data['avatar'] = $imageName;
+
+            $this->model->update($data);
+        } catch (Exception $e) {
             $this->logFlashThrow($e);
         }
     }
 
-    public function restoreData($id)
+    public function deleteData($model)
+    {
+        try {
+            return $model->delete();
+        } catch (Exception $e) {
+            $this->logFlashThrow($e);
+        }
+    }
+
+    public function restoreData(int $id)
     {
         try {
             return $this->model::withTrashed()->find($id)->restore();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logFlashThrow($e);
         }
     }
 
-    public function forceDeleteData($id)
+    public function forceDeleteData(int $id)
     {
         try {
             $user = User::where('id', $id)->withTrashed()->first();
             deleteImage($user->avatar, User::FILE_UPLOAD_PATH);
             return $user->forceDelete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logFlashThrow($e);
         }
     }

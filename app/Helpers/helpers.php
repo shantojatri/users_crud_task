@@ -1,5 +1,6 @@
 <?php
 
+use App\Utils\GlobalConstant;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -8,7 +9,7 @@ if (!function_exists('get_storage_image')) {
 
     function get_storage_image($path, $name, $type = 'normal')
     {
-        $full_path = '/storage/' . $path . '/' . $name;
+        $full_path = GlobalConstant::GLOBAL_STORAGE_PATH . $path . '/' . $name;
         if ($name) {
             return asset($full_path);
         }
@@ -16,6 +17,7 @@ if (!function_exists('get_storage_image')) {
 }
 
 if (!function_exists('getImage')) {
+
     function getImage($image = null, $type = null)
     {
         if ($image && Storage::disk('public')->exists($image)) {
@@ -27,10 +29,11 @@ if (!function_exists('getImage')) {
 }
 
 if (!function_exists('deleteImage')) {
+
     function deleteImage($requestImage, $path)
     {
-        if($requestImage){
-            return unlink(storage_path('/app/public/'.$path.'/'). $requestImage);
+        if ($requestImage) {
+            return unlink(storage_path(GlobalConstant::GLOBAL_PUBLIC_PATH . $path . '/') . $requestImage);
         }
     }
 }
