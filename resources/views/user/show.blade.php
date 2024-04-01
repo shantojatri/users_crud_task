@@ -20,7 +20,7 @@
                     <div class="w-full mx-auto">
                         <div class="pb-5">
                             <img class="rounded w-36 h-36"
-                                src="{{ $user->avatar_url ? $user->avatar_url :'/config/default.png' }}" alt="avatar">
+                                src="{{ $user->avatar ? $user->avatar_url :'/config/default.png' }}" alt="avatar">
                         </div>
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead

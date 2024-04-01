@@ -69,7 +69,7 @@ class UserController extends Controller
     public function update(UserStoreRequest $request, User $user): RedirectResponse
     {
         $validated = $request->validated();
-        $this->userService->storeOrUpdateData($request, $validated, $user);record_updated_flash();
+        $this->userService->storeOrUpdateData($request, $validated, $user);
         record_updated_flash();
 
         return redirect()->route('users.index');
