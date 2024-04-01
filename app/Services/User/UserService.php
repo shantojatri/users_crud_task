@@ -30,9 +30,14 @@ class UserService extends BaseService implements UserInterface
     public function storeOrUpdateData($request, $data, $ownModel=null)
     {
         $id = $ownModel ? $ownModel->id : null;
-        // TODO: while update user password will changed, need to fix this
-        $data['password'] = Hash::make($data['password']);
+
         try {
+            if(!is_null($data['password'])){
+                $data['password'] = Hash::make($data['password']);
+            } else{
+                $data['password'] = $ownModel->password;
+            }
+
             if($id){
                 $imageName = $this->uploadImage($request, 'avatar', User::FILE_UPLOAD_PATH, $ownModel);
             } else{
@@ -61,7 +66,6 @@ class UserService extends BaseService implements UserInterface
         } catch (\Exception $e) {
             $this->logFlashThrow($e);
         }
-
     }
 
     public function forceDeleteData($id)
@@ -69,8 +73,6 @@ class UserService extends BaseService implements UserInterface
         try {
             $user = User::where('id', $id)->withTrashed()->first();
             unlink(storage_path('/app/public/'.User::FILE_UPLOAD_PATH.'/'). $user->avatar);
-            // TODO: check with this traits again
-            // $this->deleteImage(User::FILE_UPLOAD_PATH, $user, $user->avatar);
             return $user->forceDelete();
         } catch (\Exception $e) {
             $this->logFlashThrow($e);

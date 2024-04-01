@@ -126,7 +126,6 @@ class UserController extends Controller
     public function permanentDelete($id)
     {
         try {
-            // User::where('id', $id)->withTrashed()->forceDelete();
             $this->userService->forceDeleteData($id);
             record_deleted_flash('User permanently deleted successfully');
         } catch (\Exception $e) {
