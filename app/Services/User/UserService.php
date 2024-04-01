@@ -32,7 +32,7 @@ class UserService extends BaseService implements UserInterface
         $id = $ownModel ? $ownModel->id : null;
 
         try {
-            if(!is_null($data['password'])){
+            if($data['password']){
                 $data['password'] = Hash::make($data['password']);
             } else{
                 $data['password'] = $ownModel->password;
@@ -72,7 +72,9 @@ class UserService extends BaseService implements UserInterface
     {
         try {
             $user = User::where('id', $id)->withTrashed()->first();
-            unlink(storage_path('/app/public/'.User::FILE_UPLOAD_PATH.'/'). $user->avatar);
+            if($user->avatar){
+                unlink(storage_path('/app/public/'.User::FILE_UPLOAD_PATH.'/'). $user->avatar);
+            }
             return $user->forceDelete();
         } catch (\Exception $e) {
             $this->logFlashThrow($e);

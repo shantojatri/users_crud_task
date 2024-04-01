@@ -41,13 +41,9 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $this->userService->storeOrUpdateData($request, $validated, null);
+        record_created_flash();
 
-        try {
-            $this->userService->storeOrUpdateData($request, $validated, null);
-            record_created_flash();
-        } catch (\Exception $e) {
-            log_error($e);
-        }
         return redirect()->route('users.index');
     }
 
@@ -73,12 +69,9 @@ class UserController extends Controller
     public function update(UserStoreRequest $request, User $user): RedirectResponse
     {
         $validated = $request->validated();
+        $this->userService->storeOrUpdateData($request, $validated, $user);record_updated_flash();
+        record_updated_flash();
 
-        try {
-            $this->userService->storeOrUpdateData($request, $validated, $user);record_updated_flash();
-        } catch (\Exception $e) {
-            log_error($e);
-        }
         return redirect()->route('users.index');
     }
 
@@ -88,12 +81,8 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
 
-        try {
-            $this->userService->deleteData($user);
-            record_deleted_flash();
-        } catch (\Exception $e) {
-            log_error($e);
-        }
+        $this->userService->deleteData($user);
+        record_deleted_flash();
 
         return redirect()->route('users.index');
     }
@@ -111,12 +100,9 @@ class UserController extends Controller
      */
     public function restore(int $id)
     {
-        try {
-            $this->userService->restoreData($id);
-            record_created_flash('User restored successfully');
-        } catch (\Exception $e) {
-            log_error($e);
-        }
+        $this->userService->restoreData($id);
+        record_created_flash('User restored successfully');
+
         return back();
     }
 
@@ -125,12 +111,8 @@ class UserController extends Controller
      */
     public function permanentDelete($id)
     {
-        try {
-            $this->userService->forceDeleteData($id);
-            record_deleted_flash('User permanently deleted successfully');
-        } catch (\Exception $e) {
-            log_error($e);
-        }
+        $this->userService->forceDeleteData($id);
+        record_deleted_flash('User permanently deleted successfully');
         return back();
     }
 }

@@ -28,7 +28,7 @@ class UserStoreRequest extends FormRequest
             'avatar'                => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
             'name'                  => ['required', 'string', 'max:255'],
             'email'                 => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user)],
-            'phone'                 => ['nullable', 'string', 'max:11', Rule::unique(User::class)->ignore($this->user)],
+            'phone'                 => ['nullable', 'string', 'max:12', Rule::unique(User::class)->ignore($this->user)],
             'status'                => ['required'],
             'password'              => ['required', 'confirmed', Password::min(8)],
             'password_confirmation' => ['required', Password::min(8)],
