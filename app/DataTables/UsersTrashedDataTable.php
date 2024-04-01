@@ -12,7 +12,7 @@ use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class UserDataTable extends DataTable
+class UsersTrashedDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,17 +24,15 @@ class UserDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
                 $buttons = '';
-                $buttons .= '<a href="' . route('users.edit', $query->id) . '"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <i class="ri-edit-box-line"></i>
-                </a>';
+                $buttons .= '<form action="' . route('users.soft-restore', $query->id) . '"  id="delete-form1-' . $query->id . '" method="POST">
+                    <input type="hidden" name="_token" value="' . csrf_token() . '">
+                    <button type="submit"
+                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        <i class="ri-restart-line"></i>
+                    </button>
+                </form>';
 
-                $buttons .= '<a href="' . route('users.show', $query->id) . '"
-                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                    <i class="ri-eye-line"></i>
-                </a>';
-
-                $buttons .= '<form action="' . route('users.destroy', $query->id) . '"  id="delete-form-' . $query->id . '" method="post">
+                $buttons .= '<form action="' . route('users.force-destroy', $query->id) . '"  id="delete-form-' . $query->id . '" method="POST">
                     <input type="hidden" name="_token" value="' . csrf_token() . '">
                     <input type="hidden" name="_method" value="DELETE">
                     <button class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" onclick="return makeDeleteRequest(event, ' . $query->id . ')"  type="submit">
@@ -67,7 +65,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('id', 'desc');
+        return $model->newQuery()->onlyTrashed()->orderBy('id', 'desc');
     }
 
     /**
@@ -76,7 +74,7 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('user-table')
+            ->setTableId('userstrashed-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -115,6 +113,6 @@ class UserDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'User_' . date('YmdHis');
+        return 'UsersTrashed_' . date('YmdHis');
     }
 }

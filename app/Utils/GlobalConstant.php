@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Utils\GlobalConstant;
+namespace App\Utils;
 
 class GlobalConstant {
 

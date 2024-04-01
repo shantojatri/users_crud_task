@@ -25,16 +25,19 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'avatar'   => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'phone'    => ['nullable', 'string', 'max:11'],
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'avatar'                => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
+            'name'                  => ['required', 'string', 'max:255'],
+            'email'                 => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user)],
+            'phone'                 => ['nullable', 'string', 'max:11', Rule::unique(User::class)->ignore($this->user)],
+            'status'                => ['required'],
+            'password'              => ['required', 'confirmed', Password::min(8)],
+            'password_confirmation' => ['required', Password::min(8)],
         ];
 
         if($this->user){
-            $rules['avatar']   = ['nullable'];
-            $rules['password'] = ['nullable'];
+            $rules['avatar']                = ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'];
+            $rules['password']              = ['nullable', 'string', Password::min(8)];
+            $rules['password_confirmation'] = ['nullable', Password::min(8)];
         }
 
         return $rules;
