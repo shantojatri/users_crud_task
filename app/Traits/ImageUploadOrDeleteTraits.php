@@ -29,15 +29,5 @@ trait ImageUploadOrDeleteTraits
             }
         }
     }
-
-    public function deleteImage($file_path, $model, $field){
-        if ($model->$field) {
-            try {
-                unlink(storage_path('/app/public/'.$file_path.'/'). $model->$field);
-            } catch (\Exception $e) {
-            }
-        }
-        return $model->delete();
-    }
 }
 ?>

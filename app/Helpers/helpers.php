@@ -15,15 +15,6 @@ if (!function_exists('get_storage_image')) {
     }
 }
 
-
-if (!function_exists('log_error')) {
-
-    function log_error(\Exception $e)
-    {
-        Log::error($e->getMessage());
-    }
-}
-
 if (!function_exists('getImage')) {
     function getImage($image = null, $type = null)
     {
@@ -32,6 +23,23 @@ if (!function_exists('getImage')) {
         } else {
             return asset('/images/default.png');
         }
+    }
+}
+
+if (!function_exists('deleteImage')) {
+    function deleteImage($requestImage, $path)
+    {
+        if($requestImage){
+            return unlink(storage_path('/app/public/'.$path.'/'). $requestImage);
+        }
+    }
+}
+
+if (!function_exists('log_error')) {
+
+    function log_error(\Exception $e)
+    {
+        Log::error($e->getMessage());
     }
 }
 
@@ -57,14 +65,6 @@ if (!function_exists('record_updated_flash')) {
     function record_updated_flash($message = null)
     {
         Session::flash('update', $message ?? 'Record updated successfully');
-    }
-}
-
-if (!function_exists('file_uploaded_flash')) {
-
-    function file_uploaded_flash($message = null)
-    {
-        Session::flash('file_uploaded', $message ?? 'Record updated successfully');
     }
 }
 

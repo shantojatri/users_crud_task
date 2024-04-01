@@ -17,20 +17,9 @@ class UserService extends BaseService implements UserInterface
         $this->model = User::class;
     }
 
-    public function allData()
-    {
-        return $this->model::all();
-    }
-
-    public function getList(int $id)
-    {
-        return $this->model::where('id', $id)->get();
-    }
-
     public function storeOrUpdateData($request, $data, $ownModel=null)
     {
         $id = $ownModel ? $ownModel->id : null;
-
         try {
             if($data['password']){
                 $data['password'] = Hash::make($data['password']);
@@ -72,13 +61,10 @@ class UserService extends BaseService implements UserInterface
     {
         try {
             $user = User::where('id', $id)->withTrashed()->first();
-            if($user->avatar){
-                unlink(storage_path('/app/public/'.User::FILE_UPLOAD_PATH.'/'). $user->avatar);
-            }
+            deleteImage($user->avatar, User::FILE_UPLOAD_PATH);
             return $user->forceDelete();
         } catch (\Exception $e) {
             $this->logFlashThrow($e);
         }
     }
-
 }

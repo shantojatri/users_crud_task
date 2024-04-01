@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, softDeletes;
 
-    public const FILE_UPLOAD_PATH = 'avatar';
+    public const FILE_UPLOAD_PATH = 'avatars';
 
     protected $appends = ['avatar_url'];
 
