@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use App\Utils\GlobalConstant;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserTest extends TestCase
@@ -44,7 +43,7 @@ class UserTest extends TestCase
             'remember_token'    => Str::random(10),
         ];
 
-        $result = $userService->storeOrUpdateData($payload, $payload);
+        $result = $userService->storeData($payload, $payload);
 
         $this->assertSame($payload['email'], $result->email);
     }
