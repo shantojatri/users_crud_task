@@ -74,6 +74,26 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="w-full mx-auto my-5">
+                        @foreach ($user->address as $key=>$address)
+                            <div class="mb-3">
+                                <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">User Address {{ $key+1 }}:</h2>
+                                <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+                                    <li>
+                                        Address: {{ $address->address }}
+                                    </li>
+                                    <li>
+                                        Country: {{ $address->country }}
+                                    </li>
+                                    <li>
+                                        State: {{ $address->state }}
+                                    </li>
+                                </ul>
+                            </div>
+                        @endforeach
+
+                    </div>
                 </div>
             </div>
         </div>

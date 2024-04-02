@@ -46,11 +46,9 @@ class UserService extends ImageUploadService implements UserInterface
                 event(new UserCreated($addressArr));
 
                 DB::commit();
-                // all good
             } catch (Exception $e) {
+                deleteImage($user->avatar, User::FILE_UPLOAD_PATH);
                 DB::rollback();
-                // something went wrong
-                $this->logFlashThrow($e);
             }
 
             return;

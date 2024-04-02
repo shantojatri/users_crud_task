@@ -54,9 +54,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id): View
+    public function show(int $id) //: View
     {
-        $user = User::with('address')->where('id', $id)->first();
+        $user = User::with('address:id,user_id,address,country,state')->where('id', $id)->first();
         return view('user.show', compact('user'));
     }
 
