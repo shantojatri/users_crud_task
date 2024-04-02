@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
 use App\Interfaces\UserInterface;
 use Illuminate\Http\RedirectResponse;
@@ -24,6 +25,7 @@ class UserController extends Controller
      */
     public function index(UserDataTable $dataTable): Mixed
     {
+        // return User::with('address')->get();
         return $dataTable->render('user.index');
     }
 
@@ -38,8 +40,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserStoreRequest $request): RedirectResponse
+    public function store(UserStoreRequest $request) //: RedirectResponse
     {
+        // return $request;
         $validated = $request->validated();
         $this->userService->storeData($request, $validated);
         record_created_flash();
