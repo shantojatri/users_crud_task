@@ -85,43 +85,44 @@
                             <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
                             <p class="text-lg font-medium text-gray-900 dark:text-white pb-3">User Adreess</p>
 
-                            <div id="repeater_address">
-                                <div class="flex">
-                                    <div class="w-[80%]">
+                            <div id="user_form">
+                                <div class="flex repeater">
+                                    <div class="w-[90%]">
                                         <div class="mb-6">
                                             <label for="address"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                            <input type="text" id="address" name="address[]"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
+                                            <input type="text" name="addresses[0][address]"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Enter address" required />
+                                                placeholder="Enter address" />
                                         </div>
                                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                                             <div>
                                                 <label for="country"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                                <input type="text" id="country" name="country[]"
+                                                <input type="text" name="addresses[0][country]"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Enter country" required />
+                                                    placeholder="Enter country" />
                                             </div>
                                             <div>
                                                 <label for="state"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-                                                <input type="text" id="state" name="state[]"
+                                                <input type="text" name="addresses[0][state]"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     placeholder="Enter state" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="w-[20%]">
+                                    <div class="w-[10%]">
                                         <div class="py-5 px-3 mt-2 flex gap-1">
                                             <button onclick="addNewAddress()" type="button"
-                                                class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add
-                                                new</button>
+                                                class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add</button>
                                             {{-- <button type="button"
-                                                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button> --}}
+                                                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
+                                            --}}
                                         </div>
                                     </div>
                                 </div>
+                                {{-- <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"> --}}
                             </div>
                             <!-- Submit button -->
                             <x-common.submit-btn>
@@ -135,44 +136,52 @@
     </div>
 
     @push('scripts')
-        <script>
-            function addNewAddress() {
-                var addFiels = document.getElementById("repeater_address");
-                addFiels.innerHTML += `<div class="flex">
-                                    <div class="w-[80%]">
-                                        <div class="mb-6">
-                                            <label for="address"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                            <input type="text" id="address" name="address[]"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Enter address" required />
-                                        </div>
-                                        <div class="grid gap-6 mb-6 md:grid-cols-2">
-                                            <div>
-                                                <label for="country"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                                <input type="text" id="country" name="country[]"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Enter country" required />
-                                            </div>
-                                            <div>
-                                                <label for="state"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-                                                <input type="text" id="state" name="state[]"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Enter state" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w-[20%]">
-                                        <div class="py-5 px-3 mt-2 flex gap-1">
-                                            <button onclick="addNewAddress()" type="button"
-                                                class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add
-                                                new</button>
-                                        </div>
-                                    </div>
-                                </div>`;
-            }
-        </script>
+    <script>
+        function addNewAddress() {
+            let addressElem = $('.repeater');
+            let addressCount = addressElem.length;
+            let addressLine = addressCount;
+
+            let addressData = '';
+
+            addressData = `<hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+            <div class="flex repeater">
+                <div class="w-[90%]">
+                    <div class="mb-6">
+                        <label for="address"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address ${++addressLine}</label>
+                        <input type="text" name="addresses[${addressCount}][address]"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Enter address" />
+                    </div>
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label for="country"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                            <input type="text" name="addresses[${addressCount}][country]"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Enter country" />
+                        </div>
+                        <div>
+                            <label for="state"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
+                            <input type="text" name="addresses[${addressCount}][state]"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Enter state" />
+                        </div>
+                    </div>
+                </div>
+                <div class="w-[10%]">
+                    <div class="py-5 px-3 mt-2 flex gap-1">
+                        <button onclick="addNewAddress()" type="button"
+                            class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add</button>
+                    </div>
+                </div>
+            </div>`;
+
+            $('#user_form').append(addressData);
+            addressCount++;
+        }
+    </script>
     @endpush
 </x-app-layout>

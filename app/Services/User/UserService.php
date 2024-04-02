@@ -2,14 +2,15 @@
 
 namespace App\Services\User;
 
+use DB;
 use Exception;
 use App\Models\User;
+use App\Events\UserCreated;
 use Illuminate\Http\Request;
 use App\Interfaces\UserInterface;
 use App\Services\ImageUploadService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-
 class UserService extends ImageUploadService implements UserInterface
 {
 
@@ -34,7 +35,25 @@ class UserService extends ImageUploadService implements UserInterface
                 $data['avatar'] = $imageName;
             // }
 
-            return $this->model::create($data);
+            DB::beginTransaction();
+            try {
+                $user = $this->model::create($data);
+
+                $addressArr =[
+                    'user_id' => $user->id,
+                    'address' => $data['addresses'],
+                ];
+                event(new UserCreated($addressArr));
+
+                DB::commit();
+                // all good
+            } catch (Exception $e) {
+                DB::rollback();
+                // something went wrong
+                $this->logFlashThrow($e);
+            }
+
+            return;
         } catch (Exception $e) {
             $this->logFlashThrow($e);
         }

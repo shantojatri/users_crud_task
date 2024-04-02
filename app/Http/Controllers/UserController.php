@@ -39,6 +39,7 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * Request UserStoreRequest
      */
     public function store(UserStoreRequest $request) //: RedirectResponse
     {
@@ -53,8 +54,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user): View
+    public function show(int $id): View
     {
+        $user = User::with('address')->where('id', $id)->first();
         return view('user.show', compact('user'));
     }
 

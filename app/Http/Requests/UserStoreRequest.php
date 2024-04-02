@@ -25,18 +25,35 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'avatar'                => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
-            'name'                  => ['required', 'string', 'max:255'],
-            'email'                 => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user)],
-            'phone'                 => ['nullable', 'string', 'max:12', Rule::unique(User::class)->ignore($this->user)],
-            'status'                => ['required'],
-            'password'              => ['required', 'confirmed', 'string', Password::min(8)],
+            'avatar'              => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
+            'name'                => ['required', 'string', 'max:255'],
+            'email'               => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user)],
+            'phone'               => ['nullable', 'string', 'max:12', Rule::unique(User::class)->ignore($this->user)],
+            'status'              => ['required'],
+            'password'            => ['required', 'confirmed', 'string', Password::min(8)],
+            'addresses.*.address' => ['required'],
+            'addresses.*.country'   => ['required'],
+            'addresses.*.state'    => ['required'],
         ];
 
         if($this->user){
-            $rules['password']      = ['nullable', 'confirmed', 'string', Password::min(8)];
+            $rules['password'] = ['nullable', 'confirmed', 'string', Password::min(8)];
         }
 
         return $rules;
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'address.required' => 'Address is required!',
+            'country.required'    => 'Country is required!',
+            'state.required'   => 'State is required!',
+        ];
     }
 }

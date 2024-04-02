@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('address');
-            $table->string('city');
-            $table->string('state');
             $table->string('country');
-            $table->integer('zip');
+            $table->string('state');
             $table->timestamps();
         });
     }

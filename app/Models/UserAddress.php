@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserAddress extends Model
@@ -16,9 +17,16 @@ class UserAddress extends Model
      */
     protected $fillable = [
         'address',
-        'city',
-        'state',
         'country',
-        'zip',
+        'state',
     ];
+
+
+    /**
+     * Get the user that owns the phone.
+     */
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }
