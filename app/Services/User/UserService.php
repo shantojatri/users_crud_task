@@ -25,12 +25,14 @@ class UserService extends ImageUploadService implements UserInterface
     {
     }
 
-    public function storeData(Request $request, array $data)
+    public function storeData($request, array $data)
     {
         try {
             $data['password'] = Hash::make($data['password']);
-            $imageName = $this->uploadImage($request, self::IMAGE_INPUT_NAME, User::FILE_UPLOAD_PATH);
-            $data['avatar'] = $imageName;
+            // if(($request->avatar)){
+                $imageName = $this->uploadImage($request, self::IMAGE_INPUT_NAME, User::FILE_UPLOAD_PATH);
+                $data['avatar'] = $imageName;
+            // }
 
             return $this->model::create($data);
         } catch (Exception $e) {
@@ -38,16 +40,19 @@ class UserService extends ImageUploadService implements UserInterface
         }
     }
 
-    public function updateData(Request $request, array $data, Model $model)
+    public function updateData($request, array $data, Model $model)
     {
         try {
-            if($data['password']) $data['password'] = Hash::make($data['password']);
+            if($request->password){
+                $data['password'] = Hash::make($data['password']);
+            } else{
+                $data['password'] = $model->password;
+            }
 
-            $data['password'] = $model->password;
-            $imageName = $this->uploadImage($request, 'avatar', User::FILE_UPLOAD_PATH, $model);
+            $imageName = $this->uploadImage($request, self::IMAGE_INPUT_NAME, User::FILE_UPLOAD_PATH, $model);
             $data['avatar'] = $imageName;
 
-            $this->model->update($data);
+            return $model->update($data);
         } catch (Exception $e) {
             $this->logFlashThrow($e);
         }

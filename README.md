@@ -23,8 +23,7 @@
 ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?style=for-the-badge&logo=jquery&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
-![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) 
 
 # Installation Guide
 
@@ -88,9 +87,10 @@
     npm run build
     ```
 
+12. **Finally, to UNIT Test of the Service methods**
+    ```
+    php artisan test --testsuite=Unit
+    ```
 
 
-
--------------------------------------------------------------------
-
-# Let's run the project and let me know if you have any questions ?
+## Thanks for reading those instruction and successfully run the project!
