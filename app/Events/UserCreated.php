@@ -19,7 +19,6 @@ class UserCreated
      */
     public function __construct(public $userAddress)
     {
-        // dd($userAddress);
     }
 
     /**

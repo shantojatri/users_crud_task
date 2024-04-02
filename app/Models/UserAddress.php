@@ -20,13 +20,4 @@ class UserAddress extends Model
         'country',
         'state',
     ];
-
-
-    /**
-     * Get the user that owns the phone.
-     */
-    // public function user(): BelongsTo
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
 }

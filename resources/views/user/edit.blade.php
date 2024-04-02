@@ -23,6 +23,11 @@
                             @csrf
                             @method('PUT')
 
+                            <div class="pb-5">
+                                <img class="rounded w-36 h-36"
+                                    src="{{ $user->avatar ? $user->avatar_url :'/config/default.png' }}" alt="avatar">
+                            </div>
+
                             <div class="mb-5">
                                 <label for="avatar"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Avatar</label>
@@ -88,6 +93,53 @@
                                     placeholder="Confirm password" />
                             </div>
 
+                            <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+                            <p class="text-lg font-medium text-gray-900 dark:text-white pb-3">User Adreess</p>
+
+                            <div id="user_form">
+                                @foreach ($user->address as $key=>$address)
+                                    @php
+                                        $addressCount = $key;
+                                    @endphp
+                                    @if ($key!=0)
+                                        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+                                    @endif
+                                    <div class="flex repeater">
+                                        <div class="w-[90%]">
+                                            <div class="mb-6">
+                                                <label for="address"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address {{ ++$addressCount }}</label>
+                                                <input type="text" name="addresses[{{ $key }}][address]"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="Enter address" value="{{ $address->address }}" />
+                                            </div>
+                                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                                <div>
+                                                    <label for="country"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                                                    <input type="text" name="addresses[{{ $key }}][country]"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="Enter country" value="{{ $address->country }}" />
+                                                </div>
+                                                <div>
+                                                    <label for="state"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
+                                                    <input type="text" name="addresses[{{ $key }}][state]"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="Enter state" value="{{ $address->state }}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-[10%]">
+                                            <div class="py-5 px-3 mt-2 flex gap-1">
+                                                <button onclick="addNewAddress()" type="button"
+                                                    class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
                             <!-- Submit button -->
                             <x-common.submit-btn>
                                 Update
@@ -98,4 +150,54 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function addNewAddress() {
+            let addressElem = $('.repeater');
+            let addressCount = addressElem.length;
+            let addressLine = addressCount;
+
+            let addressData = '';
+
+            addressData = `<hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+            <div class="flex repeater">
+                <div class="w-[90%]">
+                    <div class="mb-6">
+                        <label for="address"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address ${++addressLine}</label>
+                        <input type="text" name="addresses[${addressCount}][address]"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Enter address" />
+                    </div>
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label for="country"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                            <input type="text" name="addresses[${addressCount}][country]"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Enter country" />
+                        </div>
+                        <div>
+                            <label for="state"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
+                            <input type="text" name="addresses[${addressCount}][state]"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Enter state" />
+                        </div>
+                    </div>
+                </div>
+                <div class="w-[10%]">
+                    <div class="py-5 px-3 mt-2 flex gap-1">
+                        <button onclick="addNewAddress()" type="button"
+                            class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add</button>
+                    </div>
+                </div>
+            </div>`;
+
+            $('#user_form').append(addressData);
+            addressCount++;
+        }
+    </script>
+    @endpush
 </x-app-layout>

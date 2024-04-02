@@ -25,7 +25,6 @@ class UserController extends Controller
      */
     public function index(UserDataTable $dataTable): Mixed
     {
-        // return User::with('address')->get();
         return $dataTable->render('user.index');
     }
 
@@ -38,12 +37,10 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     * Request UserStoreRequest
+     * Store a newly created resource in storage.     *
      */
-    public function store(UserStoreRequest $request) //: RedirectResponse
+    public function store(UserStoreRequest $request) : RedirectResponse
     {
-        // return $request;
         $validated = $request->validated();
         $this->userService->storeData($request, $validated);
         record_created_flash();
@@ -54,7 +51,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id) //: View
+    public function show(int $id) : View
     {
         $user = User::with('address:id,user_id,address,country,state')->where('id', $id)->first();
         return view('user.show', compact('user'));
@@ -63,8 +60,9 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user): View
+    public function edit(int $id): View
     {
+        $user = User::with('address:id,user_id,address,country,state')->where('id', $id)->first();
         return view('user.edit', compact('user'));
     }
 

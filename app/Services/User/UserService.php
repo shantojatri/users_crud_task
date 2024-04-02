@@ -47,6 +47,7 @@ class UserService extends ImageUploadService implements UserInterface
 
                 DB::commit();
             } catch (Exception $e) {
+                log_error($e);
                 deleteImage($user->avatar, User::FILE_UPLOAD_PATH);
                 DB::rollback();
             }
@@ -69,7 +70,24 @@ class UserService extends ImageUploadService implements UserInterface
             $imageName = $this->uploadImage($request, self::IMAGE_INPUT_NAME, User::FILE_UPLOAD_PATH, $model);
             $data['avatar'] = $imageName;
 
-            return $model->update($data);
+            DB::beginTransaction();
+            try {
+                $model->update($data);
+
+                $addressArr = [
+                    'user_id' => $model->id,
+                    'address' => $data['addresses'],
+                ];
+                event(new UserCreated($addressArr));
+
+                DB::commit();
+            } catch (Exception $e) {
+                log_error($e);
+                deleteImage($model->avatar, User::FILE_UPLOAD_PATH);
+                DB::rollback();
+            }
+
+            return;
         } catch (Exception $e) {
             $this->logFlashThrow($e);
         }
