@@ -24,7 +24,7 @@ class UsersTrashedDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
                 $buttons = '';
-                $buttons .= '<form action="' . route('users.soft-restore', $query->id) . '"  id="delete-form1-' . $query->id . '" method="POST">
+                $buttons .= '<form action="' . route('users.soft-restore', $query->id) . '" method="POST">
                     <input type="hidden" name="_token" value="' . csrf_token() . '">
                     <button type="submit"
                         class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">

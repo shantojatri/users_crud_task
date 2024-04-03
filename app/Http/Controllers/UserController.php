@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
 use App\Interfaces\UserInterface;
 use Illuminate\Http\RedirectResponse;

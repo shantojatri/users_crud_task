@@ -32,8 +32,8 @@ class UserStoreRequest extends FormRequest
             'status'              => ['required'],
             'password'            => ['required', 'confirmed', 'string', Password::min(8)],
             'addresses.*.address' => ['required'],
-            'addresses.*.country'   => ['required'],
-            'addresses.*.state'    => ['required'],
+            'addresses.*.country' => ['required'],
+            'addresses.*.state'   => ['required'],
         ];
 
         if($this->user){
@@ -52,7 +52,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'address.required' => 'Address is required!',
-            'country.required'    => 'Country is required!',
+            'country.required' => 'Country is required!',
             'state.required'   => 'State is required!',
         ];
     }

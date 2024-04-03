@@ -60,12 +60,24 @@ class UserTest extends TestCase
             'status'                =>  GlobalConstant::STATUS_ACTIVE,
             'password'              => '12345678',
             'password_confirmation' => '12345678',
+            'address'               => [
+                [
+                    'address' => 'Dhaka',
+                    'country' => 'Bangladesh',
+                    'state'   => 'Dhaka'
+                ],
+                [
+                    'address' => 'Banani',
+                    'country' => 'Bangladesh',
+                    'state'   => 'Dhaka'
+                ]
+            ],
         ];
 
         $validator = Validator::make($payload, $request->rules());
 
         $this->assertTrue($validator->passes());
-        $result = $userService->storeData($validator, $payload);
+        $result = $userService->storeData(new UserStoreRequest($validator->validated()), $payload);
         $this->assertTrue(true, $result);
     }
 
@@ -74,33 +86,60 @@ class UserTest extends TestCase
      */
     public function test_check_if_user_is_updated_successfully()
     {
+
         $request = new UserStoreRequest();
         $userService = $this->app->make(UserService::class);
 
         // User authentication
         $user = User::factory()->create();
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => '12345678',
         ]);
         $this->assertAuthenticated();
 
+        // $payload = [
+        //     'avatar'                =>  null,
+        //     'name'                  => 'Example User',
+        //     'email'                 => 'example@example.com',
+        //     'phone'                 => '01777112233',
+        //     'status'                =>  GlobalConstant::STATUS_ACTIVE,
+        //     'password'              => '12345678',
+        //     'password_confirmation' => '12345678',
+        // ];
+
         $payload = [
             'avatar'                => null,
-            'name'                  => $user->name,
-            'email'                 => $user->email,
-            'phone'                 => $user->phone,
-            'status'                =>  GlobalConstant::STATUS_INACTIVE,
-            'password'              => '12345678',
-            'password_confirmation' => '12345678',
+            'name'                  => 'Example User Update',
+            'email'                 => 'alex@example.com',
+            'phone'                 => '01755324792',
+            'status'                => GlobalConstant::STATUS_ACTIVE,
+            'password'              => null,
+            'password_confirmation' => null,
+            'address'               => [
+                [
+                    'address' => 'Dhaka',
+                    'country' => 'Bangladesh',
+                    'state'   => 'Dhaka'
+                ],
+                [
+                    'address' => 'Banani',
+                    'country' => 'Bangladesh',
+                    'state'   => 'Dhaka'
+                ],
+                [
+                    'address' => 'Khulna',
+                    'country' => 'Bangladesh',
+                    'state'   => 'Khulna'
+                ]
+            ],
         ];
 
         $validator = Validator::make($payload, $request->rules());
-        // $this->assertTrue($validator->passes());
-        // $result = $userService->updateData($validator, $payload, $user);
-        // dd($result);
-        // $this->assertTrue(true, $result);
-        $this->assertTrue(true);
+
+        $this->assertTrue($validator->passes());
+        $result = $userService->updateData(new UserStoreRequest($validator->validated()), $payload, $user);
+        $this->assertTrue(true, $result);
     }
 
     /**
@@ -108,12 +147,11 @@ class UserTest extends TestCase
      */
     public function test_check_if_user_is_deleted_successfully()
     {
-        $request = new UserStoreRequest();
         $userService = $this->app->make(UserService::class);
 
         // User authentication
         $user = User::factory()->create();
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => '12345678',
         ]);
@@ -152,12 +190,11 @@ class UserTest extends TestCase
      */
     public function test_check_if_user_is_restore_successfully()
     {
-        $request = new UserStoreRequest();
         $userService = $this->app->make(UserService::class);
 
         // User authentication
         $user = User::factory()->create();
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => '12345678',
         ]);
@@ -173,12 +210,11 @@ class UserTest extends TestCase
      */
     public function test_check_if_user_is_force_delete_successfully()
     {
-        $request = new UserStoreRequest();
         $userService = $this->app->make(UserService::class);
 
         // User authentication
         $user = User::factory()->create();
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => '12345678',
         ]);

@@ -12,12 +12,6 @@ class ImageUploadService
     {
         $filePath = GlobalConstant::GLOBAL_PUBLIC_PATH . $path . '/';
 
-        // if ($old) return $old->$inputName;
-
-        // if(is_null($request->$inputName)){
-        //     return $old ? $old->$inputName : null;
-        // }
-
         if ($request->hasFile($inputName)) {
             $file = $request->file($inputName);
 
