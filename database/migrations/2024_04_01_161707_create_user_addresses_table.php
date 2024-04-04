@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('country');
             $table->string('state');
             $table->timestamps();
+
+            $table->index(['address', 'country', 'state']);
         });
     }
 
